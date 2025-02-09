@@ -5,9 +5,9 @@ import { IAuthUser } from "../../interfaces/common";
 import { IPaginationOptions } from "../../interfaces/pagination";
 
 const create = async (user: IAuthUser, payload: Task) => {
-
+    const data = { ...payload, userId: user.user };
     const result = await prisma.task.create({
-        data: payload,
+        data,
     });
 
     return result;
@@ -22,6 +22,11 @@ const getAll = async (
     const { searchTerm, ...filterData } = params;
 
     const andCondions: Prisma.TaskWhereInput[] = [];
+    if (user.role === "USER") {
+        andCondions.push({
+            userId: user.user,
+        });
+    }
 
     if (params.searchTerm) {
         andCondions.push({

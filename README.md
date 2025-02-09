@@ -1,79 +1,147 @@
-# SkillSync: Collaborative Learning Platform
+# Task Manager Web App
 
-SkillSync is a peer-to-peer learning platform where users can connect to teach or learn specific skills. Users can create profiles, list skills they can teach, and request sessions for skills they want to learn. This application includes session scheduling, user management, and a review system.
+## 🚀 Project Overview
 
-## Features
-- **User Authentication**: JWT-based signup and login.
-- **Dashboard**: View a list of available teachers, their skills, and a calendar for scheduled sessions.
-- **Skill Management**: Users can manage their teachable skills.
-- **Session Booking**: Request learning sessions by selecting a skill, date, and time.
-- **Review System**: Leave reviews after completing sessions.
-- **Responsive Design**: Fully responsive across devices.
+Task Manager is a full-stack web application that allows users to **manage tasks** efficiently. It includes **user authentication, profile management, and full CRUD operations for tasks**. Built with **React/Next.js, Redux, Express/NestJS, and PostgreSQL/MySQL/MongoDB**, this app ensures a smooth and secure user experience.
 
-## Tech Stack
-- **Frontend**: Next.js, TypeScript, TailwindCSS
-- **Backend**: Node.js, Express.js
-- **Database**: PostgreSQL
+## 📌 Features
 
-## Getting Started
+### ✅ User Authentication & Profile Management
 
-To get this project up and running on your local machine, follow these steps:
+-   **Sign Up/Login** (JWT authentication)
+-   **Forgot & Reset Password**
+-   **View and Edit Profile**
 
-### Prerequisites
-- Node.js (>= 16)
-- npm (>= 8) or yarn (>= 1.22)
-- PostgreSQL
+### ✅ Task Management (CRUD Operations)
 
-## Key Features
-### User Roles
-- Learners: Book sessions, leave reviews
-- Teachers: Manage skills, set availability
-- Admin: Manage users, view analytics
+-   **Create, Read, Update, Delete Tasks**
+-   **Task Filtering (Optional: By Status, Due Date)**
+-   **Task Pagination**
 
-### Skill Management
-- Add/remove teachable skills
-- Categorize skills (Technical, Creative, Academic)
-- Search and filter skills
+### ✅ Additional Features
 
-### Session Booking
-- Real-time availability checking
-- Calendar integration
-- Session status tracking (Scheduled/Completed/Cancelled)
+-   **Responsive UI** (Tailwind CSS/Bootstrap)
+-   **Secure Password Hashing** (bcrypt)
+-   **Middleware-Protected API Routes**
 
-### Frontend Setup:
+## 🛠 Tech Stack
 
-1. Navigate to the frontend directory:
-    ```bash
-    cd frontend
-    ```
-2. Install dependencies:
-    ```bash
-    npm install
-    ```
-3. Create a `.env` file in the root of the frontend directory and add the following:
-    ```env
-    NEXT_PUBLIC_BASE_URL=<your-database-url>
-    AUTH_SECRET=<your-jwt-secret>
-    ```
-4. Start the development server:
-    ```bash
-    npm run dev
-    ```
+**Frontend:** React/Next.js, Redux, Tailwind CSS/Bootstrap  
+**Backend:** Express.js/NestJS, JWT, bcrypt  
+**Database:** PostgreSQL/MySQL/MongoDB  
+**State Management:** Redux Toolkit
+
+## 🚀 Installation & Setup
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/task-manager.git
+cd task-manager
+```
+
+### 2️⃣ Install Dependencies
+
+#### Frontend
+
+```bash
+cd frontend
+npm install  # or yarn install
+```
+
+#### Backend
+
+```bash
+cd backend
+npm install  # or yarn install
+```
+
+### 3️⃣ Setup Environment Variables
+
+Create a `.env` file in the backend directory with:
+
+```env
+PORT=5000
+DATABASE_URL=your_database_url
+JWT_SECRET=your_secret_key
+```
+
+### 4️⃣ Run the Application
+
+#### Backend
+
+```bash
+cd backend
+npm run dev
+```
+
+#### Frontend
+
+```bash
+cd frontend
+npm run dev
+```
+
+The app will be available at **`http://localhost:3000`**.
+
+## 📌 API Endpoints
+
+### 🛠 Authentication
+
+-   `POST /auth/register` – Register new users
+-   `POST /auth/login` – User login & return JWT
+-   `GET /auth/profile` – Get user profile
+-   `PUT /auth/profile` – Update user profile
+-   `POST /auth/forgot-password` – Request password reset link
+-   `POST /auth/reset-password` – Reset password with token
+
+### 🛠 Task Management (Protected Routes)
+
+-   `GET /tasks` – Get all tasks for authenticated user
+-   `GET /tasks/:id` – Get task details
+-   `POST /tasks` – Create a new task
+-   `PUT /tasks/:id` – Update task
+-   `DELETE /tasks/:id` – Delete task
+
+## 🔐 Security Measures
+
+-   **JWT Authentication** for protected routes
+-   **bcrypt Password Hashing**
+-   **Validation & Error Handling**
+
+## 🔐 Credentials
 
 ### Admin:
-- Email: admin@gmail.com
-- Password: 123456
-### Learner:
-- Email: learner@gmail.com
-- Password: 123456
-### Teacher:
-- Email: teacher@gmail.com
-- Password: 123456
 
-## Live URLs
+-   Email: admin@gmail.com
+-   Password: 123456
+
+### Learner:
+
+-   Email: learner@gmail.com
+-   Password: 123456
+
+### Teacher:
+
+-   Email: teacher@gmail.com
+-   Password: 123456
+
+## 🚀 Deployment
+
 -   **Frontend Deployment**: [Frontend Live URL](https://skill-sync-nine.vercel.app)
 -   **Backend Deployment**: [Backend Live URL](https://skilsync-api.vercel.app/)
 
-## Contact
+## 📜 License
+
+This project is **MIT Licensed**.
+
+---
+
+### 💡 Need Help?
+
+Feel free to open an issue or contribute to the project!
 For queries or support, reach out via [Mohammad Ali](mailto:mohammad..98482@gmail.com). or the project repository.
 
+---
+
+🔥 **Happy Coding!** 🚀

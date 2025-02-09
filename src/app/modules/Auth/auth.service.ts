@@ -1,11 +1,12 @@
-import { Role, UserStatus } from "@prisma/client";
-import bcrypt from "bcrypt";
+import { Role, User, UserStatus } from "@prisma/client";
+import { compare, hash } from "bcrypt-ts";
 import { StatusCodes } from "http-status-codes";
 import { Secret } from "jsonwebtoken";
 import config from "../../../config";
 import { jwtHelpers } from "../../../helpars/jwtHelpers";
 import prisma from "../../../shared/prisma";
 import ApiError from "../../errors/ApiError";
+import { IAuthUser } from "../../interfaces/common";
 import emailSender from "./emailSender";
 
 const generateTokens = (user: { id: string; role: Role }) => {
@@ -40,7 +41,7 @@ const loginUser = async (payload: { email: string; password: string }) => {
     if (user.status === UserStatus.BLOCKED) {
         throw new ApiError(StatusCodes.UNAUTHORIZED, "User Suspended");
     }
-    const isCorrectPassword = await bcrypt.compare(password, user.password);
+    const isCorrectPassword = await compare(password, user.password);
 
     if (!isCorrectPassword) {
         throw new ApiError(StatusCodes.UNAUTHORIZED, "Incorrect password!");
@@ -58,18 +59,16 @@ const signupUser = async (payload: {
     name: string;
     email: string;
     password: string;
-    role: Role;
 }) => {
-    const { name, email, password, role } = payload;
-
-    const hashedPassword = bcrypt.hashSync(password, 10);
+    const { name, email, password } = payload;
+    
+    const hashedPassword =  await hash(password, 10);
 
     const newUser = await prisma.user.create({
         data: {
             name,
             email,
             password: hashedPassword,
-            role,
         },
     });
 
@@ -121,7 +120,7 @@ const changePassword = async (
         throw new ApiError(StatusCodes.NOT_FOUND, "User not found!");
     }
 
-    const isCorrectPassword = await bcrypt.compare(
+    const isCorrectPassword = await compare(
         oldPassword,
         existingUser.password
     );
@@ -130,7 +129,7 @@ const changePassword = async (
         throw new ApiError(StatusCodes.UNAUTHORIZED, "Incorrect old password!");
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 12);
+    const hashedPassword = await hash(newPassword, 12);
 
     await prisma.user.update({
         where: { email: existingUser.email },
@@ -181,7 +180,7 @@ const resetPassword = async (token: string, payload: { password: string }) => {
         );
     }
 
-    const hashedPassword = await bcrypt.hash(payload.password, 12);
+    const hashedPassword = await hash(payload.password, 12);
 
     await prisma.user.update({
         where: { email: decodedToken.email },
@@ -191,6 +190,52 @@ const resetPassword = async (token: string, payload: { password: string }) => {
     return { message: "Password reset successful!" };
 };
 
+const getMyProfile = async (user: IAuthUser) => {
+
+    const userInfo = await prisma.user.findUniqueOrThrow({
+        where: {
+            id: user?.user,
+        },
+        select: {
+            id: true,
+            name: true,
+            avatar: true,
+            email: true,
+            role: true,
+        },
+    });
+
+    return userInfo;
+};
+
+const updateMyProfie = async (
+    user: IAuthUser,
+    files: any,
+    data: Partial<User>
+) => {
+    const userInfo = await prisma.user.findUniqueOrThrow({
+        where: {
+            id: user?.user,
+        },
+    });
+
+    const avatar = files?.avatar?.[0]?.path || "";
+    if (avatar) {
+        data.avatar = avatar;
+    }
+    if (data.password) {
+        data.password = await hash(data.password, 10);
+    }
+    const profileInfo = await prisma.user.update({
+        where: {
+            email: userInfo.email,
+        },
+        data: data,
+    });
+    return profileInfo;
+};
+
+
 export const AuthServices = {
     loginUser,
     signupUser,
@@ -198,4 +243,6 @@ export const AuthServices = {
     changePassword,
     forgotPassword,
     resetPassword,
+    getMyProfile,
+    updateMyProfie
 };

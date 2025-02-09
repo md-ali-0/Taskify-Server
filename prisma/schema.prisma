@@ -19,10 +19,11 @@ model User {
   email     String     @unique
   password  String
   avatar    String?
-  role      Role
+  role      Role       @default(USER)
   status    UserStatus @default(ACTIVE)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  Task      Task[]
 }
 
 enum Role {
@@ -41,6 +42,8 @@ model Task {
   status    TaskStatus
   date      DateTime
   priority  TaskPriority
+  userId    String
+  user      User?        @relation(fields: [userId], references: [id])
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
 }
