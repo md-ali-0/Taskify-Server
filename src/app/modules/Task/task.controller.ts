@@ -79,10 +79,22 @@ const remove = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const taskStatistics = catchAsync(async (req: Request & { user?: IAuthUser }, res: Response) => {
+    const user = req.user
+    const result = await TaskService.taskStatistics(user as IAuthUser);
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Task data created!",
+        data: result,
+    });
+});
+
 export const TaskController = {
     create,
     getAll,
     getOne,
     update,
     remove,
+    taskStatistics
 };

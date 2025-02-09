@@ -168,6 +168,7 @@ const forgotPassword = async (payload: { email: string }) => {
 
 const resetPassword = async (token: string, payload: { password: string }) => {
     let decodedToken;
+
     try {
         decodedToken = jwtHelpers.verifyToken(
             token,
@@ -179,9 +180,11 @@ const resetPassword = async (token: string, payload: { password: string }) => {
             "Invalid or expired token!"
         );
     }
-
+    console.log(payload);
+    
     const hashedPassword = await hash(payload.password, 12);
-
+    console.log(hashedPassword);
+    
     await prisma.user.update({
         where: { email: decodedToken.email },
         data: { password: hashedPassword },
@@ -201,6 +204,7 @@ const getMyProfile = async (user: IAuthUser) => {
             name: true,
             avatar: true,
             email: true,
+            phone: true,
             role: true,
         },
     });
@@ -226,6 +230,7 @@ const updateMyProfie = async (
     if (data.password) {
         data.password = await hash(data.password, 10);
     }
+
     const profileInfo = await prisma.user.update({
         where: {
             email: userInfo.email,

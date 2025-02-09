@@ -126,10 +126,68 @@ const remove = async (id: string): Promise<Task | null> => {
     return result;
 };
 
+const getMonthName = (month: number) => {
+    const months = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+    return months[month] || "Unknown";
+};
+
+const taskStatistics = async (user: IAuthUser) => {
+    let query: { userId?: string } = {};
+
+    if (user.role === "USER") {
+        query.userId = user.user;
+    }
+
+    const totalTasks = await prisma.task.count({ where: query });
+    const totalTasksCompleted = await prisma.task.count({
+        where: { ...query, status: "DONE" },
+    });
+    const totalTasksInProgress = await prisma.task.count({
+        where: { ...query, status: "InPROGRESS" },
+    });
+
+    const tasks = await prisma.task.findMany({
+        where: query,
+        select: {
+            date: true,
+        },
+    });
+
+    const groupedData = tasks.reduce((acc, task) => {
+        const monthIndex = new Date(task.date).getMonth();
+        const monthName = getMonthName(monthIndex);
+
+        if (!acc[monthName]) {
+            acc[monthName] = 0;
+        }
+        acc[monthName] += 1;
+
+        return acc;
+    }, {} as Record<string, number>);
+
+    const formattedData = Object.entries(groupedData).map(([name, total]) => ({
+        name,
+        total,
+    }));
+
+    return { 
+        total: {
+            totalTasks,
+            totalTasksCompleted,
+            totalTasksInProgress,
+        }, 
+        formattedData 
+    };
+};
+
 export const TaskService = {
     create,
     getAll,
     getOne,
     update,
     remove,
+    taskStatistics,
 };

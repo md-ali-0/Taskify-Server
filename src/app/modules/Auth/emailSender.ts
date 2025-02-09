@@ -19,7 +19,7 @@ const emailSender = async (
     });
 
     await transporter.sendMail({
-        from: '"OnnoMart - Ecommerce Platform" <kvanessa337@gmail.com>',
+        from: '"Taskify - Task Manage Application" <kvanessa337@gmail.com>',
         to: email,
         subject: "Reset Password Link",
         html,
