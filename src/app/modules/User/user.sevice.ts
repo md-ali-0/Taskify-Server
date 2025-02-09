@@ -1,5 +1,5 @@
 import { Prisma, Role, User } from "@prisma/client";
-import bcrypt from "bcrypt-ts";
+import bcrypt from "bcrypt";
 import { paginationHelper } from "../../../helpars/paginationHelper";
 import prisma from "../../../shared/prisma";
 import { IPaginationOptions } from "../../interfaces/pagination";

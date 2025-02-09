@@ -36,7 +36,7 @@ Task Manager is a full-stack web application that allows users to **manage tasks
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/task-manager.git
+git clone https://github.com/md-ali-0/Taskify-Server.git
 cd task-manager
 ```
 
@@ -111,25 +111,15 @@ The app will be available at **`http://localhost:3000`**.
 
 ## 🔐 Credentials
 
-### Admin:
+### User:
 
--   Email: admin@gmail.com
--   Password: 123456
-
-### Learner:
-
--   Email: learner@gmail.com
--   Password: 123456
-
-### Teacher:
-
--   Email: teacher@gmail.com
+-   Email: ali@gmail.com
 -   Password: 123456
 
 ## 🚀 Deployment
 
--   **Frontend Deployment**: [Frontend Live URL](https://skill-sync-nine.vercel.app)
--   **Backend Deployment**: [Backend Live URL](https://skilsync-api.vercel.app/)
+-   **Frontend Deployment**: [Frontend Live URL](https://taskify-two-omega.vercel.app)
+-   **Backend Deployment**: [Backend Live URL](https://taskify-server-nine.vercel.app)
 
 ## 📜 License
 
